@@ -5,7 +5,7 @@ Attach to a puppeteer [`Target`](https://pptr.dev/#?product=Puppeteer&version=v1
 ## Install
 
 ```sh
-npm install --save puppeteer-network-stats
+npm install puppeteer-network-stats
 ```
 
 ## Usage - cli
@@ -19,6 +19,7 @@ puppeteer-network-stats <url>
 e.g.
 
 ```sh
+npm install --global puppeteer puppeteer-network-stats
 puppeteer-network-stats https://www.google.com | jq .
 [
   {
