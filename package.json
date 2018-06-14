@@ -1,0 +1,10 @@
+{
+  "name": "puppeteer-network-stats",
+  "version": "0.1.0",
+  "bin": {
+    "puppeteer-network-stats": "cli.js"
+  },
+  "devDependencies": {
+    "puppeteer": "^1.5.0"
+  }
+}
