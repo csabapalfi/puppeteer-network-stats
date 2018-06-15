@@ -24,8 +24,8 @@ class PuppeteerNetworkStats {
         return entries(this.stats).map(([,value]) => value);
     }
 
-    async attach(target) {
-        this.client = await target.createCDPSession();
+    async attach(page) {
+        this.client = await page.target().createCDPSession();
         await this.client.send('Network.enable');
         for (let [event, capture] of entries(this.config)) {
             const callback = this.onEvent.bind(this, capture);

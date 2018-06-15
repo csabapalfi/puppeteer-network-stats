@@ -1,6 +1,11 @@
+<!-- markdownlint-disable MD026 -->
+
 # Puppeteer Network Stats
 
-Attach to a puppeteer [`Target`](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-class-target) (e.g. `page.target()`) and collect network stats.
+[![Build Status](https://travis-ci.org/csabapalfi/puppeteer-network-stats.svg?branch=master)](https://travis-ci.org/csabapalfi/puppeteer-network-stats/)
+[![Coverage Status](https://coveralls.io/repos/github/csabapalfi/puppeteer-network-stats/badge.svg)](https://coveralls.io/github/csabapalfi/puppeteer-network-stats)
+
+Attach to a puppeteer page and collect network stats.
 
 ## Install
 
@@ -35,7 +40,7 @@ puppeteer-network-stats https://www.google.com | jq .
 
 ```js
 const networkStats = new PuppeteerNetworkStats();
-await networkStats.attach(page.target());
+await networkStats.attach(page);
 // ... goto a page, etc
 networkStats.getStats() // gives you an array of all requests
 ```

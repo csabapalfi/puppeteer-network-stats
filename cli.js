@@ -10,7 +10,7 @@ const [,,url] = process.argv;
 
     await page.setCacheEnabled(false);
     const networkStats = new PuppeteerNetworkStats();
-    await networkStats.attach(page.target());
+    await networkStats.attach(page);
 
     await page.goto(url, {timeout: 0, waitUntil: 'networkidle0'});
 
