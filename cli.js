@@ -5,7 +5,7 @@ const PuppeteerNetworkStats = require('./index');
 const [,,url] = process.argv;
 
 (async () => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
     const page = await browser.newPage();
 
     await page.setCacheEnabled(false);
@@ -14,7 +14,7 @@ const [,,url] = process.argv;
 
     await page.goto(url, {timeout: 0, waitUntil: 'networkidle0'});
 
-    console.log(JSON.stringify(networkStats.getStats()));
+    console.log(JSON.stringify(networkStats.getStats(), null, 2));
 
     await networkStats.detach();
     await browser.close();

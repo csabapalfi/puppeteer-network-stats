@@ -1,18 +1,20 @@
 const EventEmitter = require('events');
 const test = require('tape');
 const {stub} = require('sinon');
-
-const PuppeteerNetworkStats = require('./index');
-
-const mockClient = new EventEmitter();
-mockClient.send = stub();
-mockClient.detach = stub();
-
-const createCDPSession = stub().returns(mockClient);
-const mockPage = {target: () => ({createCDPSession})};
+const {execSync: exec} = require('child_process');
 
 test('PuppeteerNetworkStats', async (t) => {
     t.plan(6);
+
+    const PuppeteerNetworkStats = require('./index');
+
+    const mockClient = new EventEmitter();
+    mockClient.send = stub();
+    mockClient.detach = stub();
+
+    const createCDPSession = stub().returns(mockClient);
+    const mockPage = {target: () => ({createCDPSession})};
+
     const networkStats = new PuppeteerNetworkStats();
 
     await networkStats.attach(mockPage);
@@ -35,4 +37,12 @@ test('PuppeteerNetworkStats', async (t) => {
 
     await networkStats.detach(mockPage);
     t.ok(mockClient.detach.calledOnce, 'detach calls client.detach');
+});
+
+test('cli', async (t) => {
+    t.plan(1);
+
+    const output = JSON.parse(exec('node cli.js https://www.google.com'));
+
+    t.ok(output.length > 0, 'cli runs');
 });
