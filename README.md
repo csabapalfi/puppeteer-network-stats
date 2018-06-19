@@ -61,3 +61,7 @@ const networkStats = new PuppeteerNetworkStats({
 
 * The default config doesn't handle `requestServedFromCache` and `loadingFailed` events.
 * Overriding data capture for an event type completely overrides fields captured by default.
+
+## Why not just build HAR files or use `puppeteer-har`?
+
+See [sitespeedio/chrome-har#15](https://github.com/sitespeedio/chrome-har/issues/15). It's not trivial to build HAR from just network events hence this minimalist module that's not concerned with the specific HAR format.
