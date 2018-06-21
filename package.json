@@ -6,7 +6,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "bin": {
-    "puppeteer-network-stats": "cli.js"
+    "puppeteer-network-stats": "run.js"
   },
   "devDependencies": {
     "coveralls": "^3.0.1",
@@ -14,6 +14,9 @@
     "puppeteer": "^1.5.0",
     "sinon": "^6.0.0",
     "tape": "^4.9.1"
+  },
+  "peerDependencies": {
+    "puppeteer": ">=1.0.0"
   },
   "nyc": {
     "all": true,
