@@ -18,22 +18,51 @@ npm install puppeteer-network-stats
 Requires puppeteer to be installed globally, then:
 
 ```sh
-puppeteer-network-stats <url>
+puppeteer-network-stats <url> <device>
 ```
 
 e.g.
 
 ```sh
 npm install --global puppeteer puppeteer-network-stats
+```
+
+```sh
 puppeteer-network-stats https://www.google.com | jq .
-[
-  {
-    "type": "Document",
-    "url": "https://www.google.com/",
-    "status": 200,
-    "size": 72313
+{
+  "url": "https://www.google.com"
+  "requests": [
+    {
+      "type": "Document",
+      "url": "https://www.google.com/",
+      "status": 200,
+      "size": 72313
+    },
+    ...
+  ]
+}
+```
+
+You can also specify a device to emulate. See the list of [all available devices here](https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js).
+
+```sh
+puppeteer-network-stats https://www.google.com "iPhone X" | jq .
+{
+  "url": "https://www.google.com"
+  "device": {
+    "name": "iPhone X",
+    ...
   },
-  ...
+  "requests": [
+    {
+      "type": "Document",
+      "url": "https://www.google.com/",
+      "status": 200,
+      "size": 72313
+    },
+    ...
+  ]
+}
 ```
 
 ## Usage - module
@@ -42,10 +71,10 @@ You can just require the run function (that's also used for the cli).
 
 ```js
 const run = require('puppeteer-network-stats/run');
-console.log(await run('https://www.google.com'));
+console.log(await run('https://www.google.com', 'iPhone X'));
 ```
 
-If you want to interact with your page, etc:
+If you want to interact with your page and customize even more:
 
 ```js
 const PuppeteerNetworkStats = require('puppeteer-network-stats');
