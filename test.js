@@ -39,10 +39,13 @@ test('PuppeteerNetworkStats', async (t) => {
     t.ok(mockClient.detach.calledOnce, 'detach calls client.detach');
 });
 
-test('cli', async (t) => {
-    t.plan(1);
+test('run', async (t) => {
+    t.plan(2);
 
-    const output = JSON.parse(exec('node cli.js https://www.google.com'));
+    const scriptOutput = JSON.parse(exec('node run.js https://www.google.com'));
+    t.ok(scriptOutput.length > 0, 'runs as a script');
 
-    t.ok(output.length > 0, 'cli runs');
+    const run = require('./run');
+    const moduleOutput = await run('https://www.google.com');
+    t.ok(moduleOutput.length > 0, 'runs as a module');
 });

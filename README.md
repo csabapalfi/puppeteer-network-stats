@@ -38,14 +38,24 @@ puppeteer-network-stats https://www.google.com | jq .
 
 ## Usage - module
 
+You can just require the run function (that's also used for the cli).
+
 ```js
+const run = require('puppeteer-network-stats/run');
+console.log(await run('https://www.google.com'));
+```
+
+If you want to interact with your page, etc:
+
+```js
+const PuppeteerNetworkStats = require('puppeteer-network-stats');
 const networkStats = new PuppeteerNetworkStats();
 await networkStats.attach(page);
 // ... goto a page, etc
 networkStats.getStats() // gives you an array of all requests
 ```
 
-By default it only captures `url`, `type`, `status` and `size` but easy to configure to capture data from any [Network.*](https://chromedevtools.github.io/devtools-protocol/tot/Network#event-dataReceived) event.
+It's also easy to capture data from any [Network.*](https://chromedevtools.github.io/devtools-protocol/tot/Network#event-dataReceived) event.
 
 e.g. to capture mimeType, too
 
