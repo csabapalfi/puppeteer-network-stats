@@ -2,5 +2,6 @@ language: node_js
 nodejs:
   - "lts/*"
 install:
+  - npm i -g npm@5.7.1
   - npm ci
 after_success: npm run coverage
