@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 
 const puppeteer = require('puppeteer');
+const devices = require('puppeteer/DeviceDescriptors');
 const PuppeteerNetworkStats = require('./index');
 
-async function run(url) {
+async function run(url, deviceName) {
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   const page = await browser.newPage();
+  const device = devices[deviceName];
+  if (device) {
+    page.emulate(device);
+  }
 
   await page.setCacheEnabled(false);
   const networkStats = new PuppeteerNetworkStats();
@@ -18,13 +23,17 @@ async function run(url) {
   await networkStats.detach();
   await browser.close();
 
-  return networkStats.getStats();
+  return {
+    url,
+    device,
+    requests: networkStats.getStats()
+  };
 }
 
 if (require.main === module) {
   (async () => {
-    const [,,url] = process.argv;
-    console.log(JSON.stringify(await run(url), null, 2));
+    const [,,url, deviceName] = process.argv;
+    console.log(JSON.stringify(await run(url, deviceName), null, 2));
   })();
 }
 

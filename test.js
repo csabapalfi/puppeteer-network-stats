@@ -39,13 +39,40 @@ test('PuppeteerNetworkStats', async (t) => {
     t.ok(mockClient.detach.calledOnce, 'detach calls client.detach');
 });
 
-test('run', async (t) => {
-    t.plan(2);
+const url = 'https://www.google.com';
 
-    const scriptOutput = JSON.parse(exec('node run.js https://www.google.com'));
-    t.ok(scriptOutput.length > 0, 'runs as a script');
+test('cli', (t) => {
+    t.plan(6);
+
+    const runCli = (device = '') =>
+        JSON.parse(exec(`node run.js ${url} "${device}"`));
+
+    const result = runCli();
+    t.equal(result.url, url, 'url logged when no emulation');
+    t.equal(result.device, undefined, 'no device logged when no emulation');
+    t.ok(result.requests.length > 0, 'has results when no emulation');
+
+    const mobileResult = runCli('iPhone X');
+    t.equal(mobileResult.url, url, 'url logged when emulating device');
+    t.equal(mobileResult.device.name, 'iPhone X', 'device logged when emulating device');
+    t.ok(mobileResult.requests.length > 0, 'has results when emulating device');
+
+});
+
+test('module', async (t) => {
+    t.plan(6);
 
     const run = require('./run');
-    const moduleOutput = await run('https://www.google.com');
-    t.ok(moduleOutput.length > 0, 'runs as a module');
+    const runModule = async (device) => await run(url, device);
+
+    const result = await runModule();
+    t.equal(result.url, url, 'url logged when no emulation');
+    t.equal(result.device, undefined, 'no device logged when no emulation');
+    t.ok(result.requests.length > 0, 'has results when no emulation');
+
+    const mobileResult = await runModule('iPhone X');
+    t.equal(mobileResult.url, url, 'url logged when emulating device');
+    t.equal(mobileResult.device.name, 'iPhone X', 'device logged when emulating device');
+    t.ok(mobileResult.requests.length > 0, 'has results when emulating device');
+
 });
