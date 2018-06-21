@@ -54,8 +54,8 @@ test('PuppeteerNetworkStats', async (t) => {
     t.ok(mockClient.detach.calledOnce, 'detach calls client.detach');
 
     networkStats.clearRequests();
-    t.equal(
-        networkStats.getRequests().length, 0,
+    t.deepEqual(
+        networkStats.getRequests(), {},
         'clearRequests clears captured requests'
     );
 
