@@ -63,6 +63,7 @@ puppeteer-network-stats https://www.google.com "iPhone X" | jq .
     ...
   ]
 }
+```
 
 ## Usage - module
 
