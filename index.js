@@ -1,33 +1,29 @@
-const {entries} = Object;
-
-const defaults = {
-    requestWillBeSent: ({type, request: {url}}) => ({type, url}),
-    responseReceived: ({response: {status}}) => ({status}),
-    loadingFinished: ({encodedDataLength: size}) => ({size}),
-};
-
 class PuppeteerNetworkStats {
 
-    constructor(config = {}) {
-        this.config = {...defaults, ...config};
-        this.stats = {};
+    constructor(config) {
+        this.config = config;
+        this.requests = {};
     }
 
-    onEvent(capture, {requestId, ...params}) {
-        this.stats[requestId] = {
-            ...this.stats[requestId],
+    onEvent(capture, {requestId: id, ...params}) {
+        this.requests[id] = {
+            ...this.requests[id],
             ...capture(params)
         };
     }
 
-    getStats() {
-        return entries(this.stats).map(([,value]) => value);
+    getRequests() {
+        return this.requests;
+    }
+
+    clearRequests() {
+        this.requests = {};
     }
 
     async attach(page) {
         this.client = await page.target().createCDPSession();
         await this.client.send('Network.enable');
-        for (let [event, capture] of entries(this.config)) {
+        for (let [event, capture] of Object.entries(this.config)) {
             const callback = this.onEvent.bind(this, capture);
             await this.client.on(`Network.${event}`, callback);
         }
