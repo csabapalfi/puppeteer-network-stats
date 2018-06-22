@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-network-stats",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "test": "nyc tape test.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
